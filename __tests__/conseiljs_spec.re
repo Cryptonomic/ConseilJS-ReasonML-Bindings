@@ -2,8 +2,6 @@ open Jest;
 
 open ConseiljsRe;
 open Type;
-let conseilServerInfo = {"url": "https://conseil-dev.cryptonomic-infra.tech:443", "apiKey": "hooman"};
-let network = "alphanet";
 // let () =
 //   describe(
 //     "ConseilQueryBuilder",
@@ -52,38 +50,38 @@ let network = "alphanet";
 //     ),
 //   );
 
-  let () =
-  describe(
-    "TezosConseilClient",
-    ExpectJs.(
-      () => {
-        // test("#getTezosEntityData", () => {
-        //   let query = ConseilQueryBuilder.blankQuery();
-        //   let entities = ["block_hash", "operation_group_hash", "kind", "source", "destination", "amount", "fee", "slots"];
-        //   let query = ConseilQueryBuilder.addFields(query, entities);
-        //   let query = ConseilQueryBuilder.addAggregationFunction(query, "fee", Type.SUM);
-        //   expect(query##aggregation[0]##field) |> toBe("fee");
-        // });
-        test("#getBlock", () => {
-          let blockid = "BLBiMfnsKAwfzdmUoq3QKpZijiPFNf36n6GD96HbvMPCNWZHHQQ"; 
-          let query = ConseilQueryBuilder.blankQuery();
-          let entities = ["block_hash", "amount", "fee"];
-          let query = ConseilQueryBuilder.addFields(query, entities);
-          let query = ConseilQueryBuilder.addPredicate(query, "block_hash", Type.EQ, [|blockid|], false);
-          let query = ConseilQueryBuilder.addAggregationFunction(query, "fee", Type.SUM);
-          let query = ConseilQueryBuilder.addAggregationFunction(query, "amount", Type.SUM);
-          let blockPromise = TezosConseilClient.getBlock(conseilServerInfo, network, blockid);
-          let aaa = Js.Promise.(
-           blockPromise
-            |> then_(values => {
-              Js.log("blockPromise");
-              Js.log(values);
-              resolve(values);
-            })
-          );
-          expect(query##limit) |> toBe(100);
-        });
+  // let () =
+  // describe(
+  //   "TezosConseilClient",
+  //   ExpectJs.(
+  //     () => {
+  //       test("#getTezosEntityData", () => {
+  //         let query = ConseilQueryBuilder.blankQuery();
+  //         let entities = ["block_hash", "operation_group_hash", "kind", "source", "destination", "amount", "fee", "slots"];
+  //         let query = ConseilQueryBuilder.addFields(query, entities);
+  //         let query = ConseilQueryBuilder.addAggregationFunction(query, "fee", Type.SUM);
+  //         expect(query##aggregation[0]##field) |> toBe("fee");
+  //       });
+  //       test("#getBlock", () => {
+  //         let blockid = "BLBiMfnsKAwfzdmUoq3QKpZijiPFNf36n6GD96HbvMPCNWZHHQQ"; 
+  //         let query = ConseilQueryBuilder.blankQuery();
+  //         let entities = ["block_hash", "amount", "fee"];
+  //         let query = ConseilQueryBuilder.addFields(query, entities);
+  //         let query = ConseilQueryBuilder.addPredicate(query, "block_hash", Type.EQ, [|blockid|], false);
+  //         let query = ConseilQueryBuilder.addAggregationFunction(query, "fee", Type.SUM);
+  //         let query = ConseilQueryBuilder.addAggregationFunction(query, "amount", Type.SUM);
+  //         let blockPromise = TezosConseilClient.getBlock(conseilServerInfo, network, blockid);
+  //         let aaa = Js.Promise.(
+  //          blockPromise
+  //           |> then_(values => {
+  //             Js.log("blockPromise");
+  //             Js.log(values);
+  //             resolve(values);
+  //           })
+  //         );
+  //         expect(query##limit) |> toBe(100);
+  //       });
 
-      }
-    ),
-  );
+  //     }
+  //   ),
+  // );

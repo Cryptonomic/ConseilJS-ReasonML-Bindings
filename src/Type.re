@@ -134,7 +134,7 @@ type tezosOperationGroup = Js.t({
   blockId: string
 });
 
-type operationKindType =  | SeedNonceRevelation  | Delegation  | Transaction  | AccountActivation  | Origination | Reveal | Endorsement  | Ballot;
+type operationKindType = | SeedNonceRevelation | Delegation | Transaction | AccountActivation | Origination | Reveal | Endorsement | Ballot;
 let operationKindTypeToString = operationKindType : string =>
   switch (operationKindType) {
   | SeedNonceRevelation => "seed_nonce_revelation"
@@ -241,7 +241,7 @@ type tezosNodeReader = {
   [@bs.meth] "getAccountManagerForBlock": (string, string, string) => Js.Promise.t(managerKey),
   [@bs.meth] "isImplicitAndEmpty": (string, string) => Js.Promise.t(bool),
   [@bs.meth] "isManagerKeyRevealedForAccount": (string, string) => Js.Promise.t(bool)
-}
+};
 
 type storeType = | Mnemonic | Fundraiser | Hardware;
 let storeTypeToInt = storeType: int => 
@@ -294,7 +294,7 @@ type tezosNodeWriter = {
   [@bs.meth] "sendContractPing": (string, keyStore, string, int, string, int, int) => Js.Promise.t(TezosType.operationResult),
   [@bs.meth] "sendKeyRevealOperation": (string, keyStore, int, string) => Js.Promise.t(TezosType.operationResult),
   [@bs.meth] "sendIdentityActivationOperation": (string, keyStore, string, string) => Js.Promise.t(TezosType.operationResult)
-}
+};
 
 type tezosWalletUtil = {
   . [@bs.meth] "unlockFundraiserIdentity": (string, string, string, string) => Js.Promise.t(keyStore),
@@ -302,7 +302,7 @@ type tezosWalletUtil = {
   [@bs.meth] "generateMnemonic": (int) => string,
   [@bs.meth] "unlockIdentityWithMnemonic": (string, string) => Js.Promise.t(keyStore),
   [@bs.meth] "getKeysFromMnemonicAndPassphrase": (string, string, int, string) => Js.Promise.t(keyStore)
-}
+};
 
 type wallet = Js.t({
   .identities: array(keyStore)
@@ -312,11 +312,11 @@ type tezosFileWallet = {
   . [@bs.meth] "saveWallet": (string, wallet, string) => Js.Promise.t(wallet),
   [@bs.meth] "loadWallet": (string, string) => Js.Promise.t(wallet),
   [@bs.meth] "createWallet": (string, string) => Js.Promise.t(wallet)
-}
+};
 
 type conseilDataClient = {
   . [@bs.meth] "executeEntityQuery": (conseilServerInfo, string, string, string, conseilQuery) => Js.Promise.t(array(string)),
-}
+};
 
 type platformDefinition = Js.t({
   . name: string,
@@ -390,4 +390,4 @@ type conseilMetadataClient = {
   [@bs.meth] "getAttributes": (conseilServerInfo, string, string, string) => Js.Promise.t(array(attributeDefinition)),
   [@bs.meth] "getAttributeValues": (conseilServerInfo, string, string, string, string) => Js.Promise.t(array(string)),
   [@bs.meth] "getAttributeValuesForPrefix": (conseilServerInfo, string, string, string, string, string) => Js.Promise.t(array(string)),
-}
+};

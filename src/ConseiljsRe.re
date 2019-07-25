@@ -60,7 +60,7 @@ module TezosConseilClient = {
     tezosConseilClient##awaitOperationConfirmation(serverInfo, network, hash, duration);
   let awaitOperationForkConfirmation = (serverInfo: conseilServerInfo, network: string, hash: string, duration: int, depth: int) =>
     tezosConseilClient##awaitOperationForkConfirmation(serverInfo, network, hash, duration, depth);
-}
+};
 
 module TezosLanguageUtil = {
   let hexToMicheline = (hex: string) => tezosLanguageUtil##hexToMicheline(hex);
@@ -69,7 +69,7 @@ module TezosLanguageUtil = {
   let translateMichelineToHex = (code: string) => tezosLanguageUtil##translateMichelineToHex(code);
   let preProcessMichelsonScript = (code: string) => tezosLanguageUtil##preProcessMichelsonScript(code);
   let normalizeMichelineWhiteSpace = (fragment: string) => tezosLanguageUtil##normalizeMichelineWhiteSpace(fragment);
-}
+};
 
 module TezosMessageUtils = {
   let writeBoolean = (value: bool) => tezosMessageUtils##writeBoolean(value);
@@ -93,7 +93,7 @@ module TezosMessageUtils = {
   let writeBufferWithHint = (b: string) => tezosMessageUtils##writeBufferWithHint(b);
   let computeOperationHash = (signedOpGroup: signedOperationGroup) => tezosMessageUtils##computeOperationHash(signedOpGroup);
   let computeKeyHash = (key: Buffer.t, prefix: string) => tezosMessageUtils##computeKeyHash(key, prefix);
-}
+};
 
 module TezosNodeReader = {
   let getBlock = (server: string, hash: string) => tezosNodeReader##getBlock(server, hash);
@@ -106,7 +106,7 @@ module TezosNodeReader = {
   let isImplicitAndEmpty = (server: string, accountHash: string) => tezosNodeReader##isImplicitAndEmpty(server, accountHash);
   let isManagerKeyRevealedForAccount = (server: string, accountHash: string) =>
     tezosNodeReader##isManagerKeyRevealedForAccount(server, accountHash);
-}
+};
 
 module TezosNodeWriter = {
   let signOperationGroup = (forgedOperation: string, keyStore: keyStore, derivationPath: string) =>
@@ -147,7 +147,7 @@ module TezosNodeWriter = {
     tezosNodeWriter##sendKeyRevealOperation(server, keyStore, fee, path);
   let sendIdentityActivationOperation = (server: string, keyStore: keyStore, code: string, path: string) =>
     tezosNodeWriter##sendIdentityActivationOperation(server, keyStore, code, path);
-}
+};
 
 module TezosWalletUtil = {
   let unlockFundraiserIdentity = (mnemonic: string, email: string, password: string, pkh: string) =>
@@ -157,17 +157,17 @@ module TezosWalletUtil = {
   let unlockIdentityWithMnemonic = (mnemonic: string, passphrase: string) => tezosWalletUtil##unlockIdentityWithMnemonic(mnemonic, passphrase);
   let getKeysFromMnemonicAndPassphrase = (mnemonic: string, passphrase: string, storeType: storeType, pkh: string) =>
     tezosWalletUtil##getKeysFromMnemonicAndPassphrase(mnemonic, passphrase, storeType |> storeTypeToInt, pkh);
-}
+};
 module TezosFileWallet = {
   let saveWallet = (filename: string, wallet: wallet, passphrase: string) => tezosFileWallet##saveWallet(filename, wallet, passphrase);
   let loadWallet = (filename: string, passphrase: string) => tezosFileWallet##loadWallet(filename, passphrase);
   let createWallet = (filename: string, passphrase: string) => tezosFileWallet##createWallet(filename, passphrase);
-}
+};
 
 module ConseilDataClient = {
   let executeEntityQuery = (serverInfo: conseilServerInfo, platform: string, network: string, entity: string, query: conseilQuery) =>
     conseilDataClient##executeEntityQuery(serverInfo, platform, network, entity, query);
-}
+};
 
 module ConseilMetadataClient = {
   let executeMetadataQuery = (serverInfo: conseilServerInfo, route: string) =>
@@ -182,4 +182,4 @@ module ConseilMetadataClient = {
     conseilMetadataClient##getAttributeValues(serverInfo, platform, network, entity, attribute);
   let getAttributeValuesForPrefix = (serverInfo: conseilServerInfo, platform: string, network: string, entity: string, attribute: string, prefix: string) =>
     conseilMetadataClient##getAttributeValuesForPrefix(serverInfo, platform, network, entity, attribute, prefix);
-}
+};

@@ -28,7 +28,6 @@ matrix:
             - libusb-1.0-0-dev
 
 cache:
-  yarn: true
   directories:
     - node_modules
 

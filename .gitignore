@@ -17,9 +17,7 @@ coverage
 /node_modules*
 .merlin
 .install
-/lib/js/__tests__/
-/lib/bs/
-/lib/ocaml/
+/lib/
 *.log
 .bsb.lock
 /src/*.js

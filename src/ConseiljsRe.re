@@ -1,4 +1,4 @@
-open Type;
+open ConseiljsType;
 [@bs.module "conseiljs"] external conseilQueryBuilder: conseilQueryBuilder = "ConseilQueryBuilder";
 [@bs.module "conseiljs"] external tezosConseilClient: tezosConseilClient = "TezosConseilClient";
 [@bs.module "conseiljs"] external tezosLanguageUtil: tezosLanguageUtil = "TezosLanguageUtil";

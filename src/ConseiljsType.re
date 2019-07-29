@@ -342,8 +342,12 @@ type tezosFileWallet = {
   [@bs.meth] "createWallet": (string, string) => Js.Promise.t(wallet)
 };
 
+type executeQuery = Js.t({
+  . hash: string
+});
+
 type conseilDataClient = {
-  . [@bs.meth] "executeEntityQuery": (conseilServerInfo, string, string, string, conseilQuery) => Js.Promise.t(array(string)),
+  . [@bs.meth] "executeEntityQuery": (conseilServerInfo, string, string, string, conseilQuery) => Js.Promise.t(array(executeQuery))
 };
 
 type platformDefinition = Js.t({

@@ -38,6 +38,8 @@ module TezosConseilClient = {
   let getBlockHead = (serverInfo: conseilServerInfo, network: string) => tezosConseilClient##getBlockHead(serverInfo, network);
   let getBlockByLevel = (serverInfo: conseilServerInfo, network: string, level: int) =>
     tezosConseilClient##getBlockByLevel(serverInfo, network, level);
+  let getAccount = (serverInfo: conseilServerInfo, network: string, id: string) =>
+    tezosConseilClient##getAccount(serverInfo, network, id);
   let getOperationGroup = (serverInfo: conseilServerInfo, network: string, id: string) =>
     tezosConseilClient##getOperationGroup(serverInfo, network, id);
   let getBlocks = (serverInfo: conseilServerInfo, network: string, query: conseilQuery) =>

@@ -81,7 +81,10 @@ type conseilServerInfo = Js.t({
 });
 
 type tezosBlock = Js.t({
-  . level: int,
+  . active_proposal: string,
+  baker: string,
+  chain_id: string,
+  level: int,
   proto: int,
   predecessor: string,
   timestamp: int,
@@ -90,9 +93,11 @@ type tezosBlock = Js.t({
   context: string,
   signature: string,
   protocol: string,
-  chainId: string,
   hash: string,
-  operationsHash: string
+  operations_hash: string,
+  meta_cycle: int,
+  meta_cycle_position: int,
+  period_kind: string
 });
 
 type tezosAccount = Js.t({
@@ -147,10 +152,38 @@ let operationKindTypeToString = operationKindType : string =>
   | Ballot => "ballot"
   };
 
+type tezosBlockHead = Js.t({
+  . active_proposal: string,
+  baker: string,
+  chain_id: string,
+  consumed_gas: int,
+  context: string,
+  hash: string,
+  level: int,
+  meta_cycle: int,
+  meta_cycle_position: int,
+  meta_level: int,
+  meta_level_position: int,
+  meta_voting_period: int,
+  meta_voting_period_position: int,
+  operations_hash: string,
+  period_kind: string,
+  predecessor: string,
+  proto: string,
+  protocol: string,
+  signature: string,
+  timestamp: int
+});
+
+type entityQuery = Js.t({
+  . entity: string,
+  query: conseilQuery
+});
+
 type tezosConseilClient = {
   . [@bs.meth] "getTezosEntityData": (conseilServerInfo, string, string, conseilQuery) => Js.Promise.t(array(string)),
   [@bs.meth] "getBlock": (conseilServerInfo, string, string) => Js.Promise.t(array(tezosBlock)),
-  [@bs.meth] "getBlockHead": (conseilServerInfo, string) => Js.Promise.t(array(string)),
+  [@bs.meth] "getBlockHead": (conseilServerInfo, string) => Js.Promise.t(tezosBlockHead),
   [@bs.meth] "getBlockByLevel": (conseilServerInfo, string, int) => Js.Promise.t(array(tezosBlock)),
   [@bs.meth] "getAccount": (conseilServerInfo, string, string) => Js.Promise.t(array(tezosAccount)),
   [@bs.meth] "getOperationGroup": (conseilServerInfo, string, string) => Js.Promise.t(array(tezosOperationGroup)),
@@ -314,8 +347,12 @@ type tezosFileWallet = {
   [@bs.meth] "createWallet": (string, string) => Js.Promise.t(wallet)
 };
 
+type executeQuery = Js.t({
+  . hash: string
+});
+
 type conseilDataClient = {
-  . [@bs.meth] "executeEntityQuery": (conseilServerInfo, string, string, string, conseilQuery) => Js.Promise.t(array(string)),
+  . [@bs.meth] "executeEntityQuery": (conseilServerInfo, string, string, string, conseilQuery) => Js.Promise.t(array(executeQuery))
 };
 
 type platformDefinition = Js.t({

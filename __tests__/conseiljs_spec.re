@@ -1,7 +1,7 @@
 open Jest;
 
 open ConseiljsRe;
-open Type;
+open ConseiljsType;
 // let () =
 //   describe(
 //     "ConseilQueryBuilder",
@@ -21,12 +21,12 @@ open Type;
 //         });
 //         test("#addPredicate", () => {
 //           let query = ConseilQueryBuilder.blankQuery();
-//           let query = ConseilQueryBuilder.addPredicate(query, "block_hash", Type.EQ, [|"test"|], false);
+//           let query = ConseilQueryBuilder.addPredicate(query, "block_hash", ConseiljsType.EQ, [|"test"|], false);
 //           expect(query##limit) |> toBe(100);
 //         });
 //         test("#addOrdering", () => {
 //           let query = ConseilQueryBuilder.blankQuery();
-//           let query = ConseilQueryBuilder.addOrdering(query, "block_level", Type.DESC);
+//           let query = ConseilQueryBuilder.addOrdering(query, "block_level", ConseiljsType.DESC);
 //           Js.log("addOrdering");
 //           Js.log(query##orderBy[0]##field);
 //           expect(query##orderBy[0]##field) |> toBe("block_level");
@@ -42,7 +42,7 @@ open Type;
 //           let query = ConseilQueryBuilder.blankQuery();
 //           let entities = ["block_hash", "operation_group_hash", "kind", "source", "destination", "amount", "fee", "slots"];
 //           let query = ConseilQueryBuilder.addFields(query, entities);
-//           let query = ConseilQueryBuilder.addAggregationFunction(query, "fee", Type.SUM);
+//           let query = ConseilQueryBuilder.addAggregationFunction(query, "fee", ConseiljsType.SUM);
 //           expect(query##aggregation[0]##field) |> toBe("fee");
 //         });
 
@@ -59,7 +59,7 @@ open Type;
   //         let query = ConseilQueryBuilder.blankQuery();
   //         let entities = ["block_hash", "operation_group_hash", "kind", "source", "destination", "amount", "fee", "slots"];
   //         let query = ConseilQueryBuilder.addFields(query, entities);
-  //         let query = ConseilQueryBuilder.addAggregationFunction(query, "fee", Type.SUM);
+  //         let query = ConseilQueryBuilder.addAggregationFunction(query, "fee", ConseiljsType.SUM);
   //         expect(query##aggregation[0]##field) |> toBe("fee");
   //       });
   //       test("#getBlock", () => {
@@ -67,9 +67,9 @@ open Type;
   //         let query = ConseilQueryBuilder.blankQuery();
   //         let entities = ["block_hash", "amount", "fee"];
   //         let query = ConseilQueryBuilder.addFields(query, entities);
-  //         let query = ConseilQueryBuilder.addPredicate(query, "block_hash", Type.EQ, [|blockid|], false);
-  //         let query = ConseilQueryBuilder.addAggregationFunction(query, "fee", Type.SUM);
-  //         let query = ConseilQueryBuilder.addAggregationFunction(query, "amount", Type.SUM);
+  //         let query = ConseilQueryBuilder.addPredicate(query, "block_hash", ConseiljsType.EQ, [|blockid|], false);
+  //         let query = ConseilQueryBuilder.addAggregationFunction(query, "fee", ConseiljsType.SUM);
+  //         let query = ConseilQueryBuilder.addAggregationFunction(query, "amount", ConseiljsType.SUM);
   //         let blockPromise = TezosConseilClient.getBlock(conseilServerInfo, network, blockid);
   //         let aaa = Js.Promise.(
   //          blockPromise

@@ -1,4 +1,4 @@
-open Type;
+open ConseiljsType;
 [@bs.module "conseiljs"] external conseilQueryBuilder: conseilQueryBuilder = "ConseilQueryBuilder";
 [@bs.module "conseiljs"] external tezosConseilClient: tezosConseilClient = "TezosConseilClient";
 [@bs.module "conseiljs"] external tezosLanguageUtil: tezosLanguageUtil = "TezosLanguageUtil";
@@ -38,6 +38,8 @@ module TezosConseilClient = {
   let getBlockHead = (serverInfo: conseilServerInfo, network: string) => tezosConseilClient##getBlockHead(serverInfo, network);
   let getBlockByLevel = (serverInfo: conseilServerInfo, network: string, level: int) =>
     tezosConseilClient##getBlockByLevel(serverInfo, network, level);
+  let getAccount = (serverInfo: conseilServerInfo, network: string, id: string) =>
+    tezosConseilClient##getAccount(serverInfo, network, id);
   let getOperationGroup = (serverInfo: conseilServerInfo, network: string, id: string) =>
     tezosConseilClient##getOperationGroup(serverInfo, network, id);
   let getBlocks = (serverInfo: conseilServerInfo, network: string, query: conseilQuery) =>
@@ -60,6 +62,18 @@ module TezosConseilClient = {
     tezosConseilClient##awaitOperationConfirmation(serverInfo, network, hash, duration);
   let awaitOperationForkConfirmation = (serverInfo: conseilServerInfo, network: string, hash: string, duration: int, depth: int) =>
     tezosConseilClient##awaitOperationForkConfirmation(serverInfo, network, hash, duration, depth);
+  [@bs.val] [@bs.scope ("Conseiljs", "TezosConseilClient")] external getEntityQueryForIdByNumber : int => entityQuery = "getEntityQueryForId";
+  [@bs.val] [@bs.scope ("Conseiljs", "TezosConseilClient")] external getEntityQueryForIdByString : string => entityQuery = "getEntityQueryForId";
+  let getEntityQueryForId = (id: string) => {
+    let isNumber = switch (int_of_string(id)) {
+      | exception _ => false
+      | _ => true
+    };
+    switch isNumber {
+    | true => getEntityQueryForIdByNumber(int_of_string(id))
+    | false => getEntityQueryForIdByString(id)
+    };
+  };
 };
 
 module TezosLanguageUtil = {

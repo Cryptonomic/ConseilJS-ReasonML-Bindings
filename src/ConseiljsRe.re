@@ -62,6 +62,18 @@ module TezosConseilClient = {
     tezosConseilClient##awaitOperationConfirmation(serverInfo, network, hash, duration);
   let awaitOperationForkConfirmation = (serverInfo: conseilServerInfo, network: string, hash: string, duration: int, depth: int) =>
     tezosConseilClient##awaitOperationForkConfirmation(serverInfo, network, hash, duration, depth);
+  [@bs.val] [@bs.scope ("Conseiljs", "TezosConseilClient")] external getEntityQueryForIdByNumber : int => entityQuery = "getEntityQueryForId";
+  [@bs.val] [@bs.scope ("Conseiljs", "TezosConseilClient")] external getEntityQueryForIdByString : string => entityQuery = "getEntityQueryForId";
+  let getEntityQueryForId = (id: string) => {
+    let isNumber = switch (int_of_string(id)) {
+      | exception _ => false
+      | _ => true
+    };
+    switch isNumber {
+    | true => getEntityQueryForIdByNumber(int_of_string(id))
+    | false => getEntityQueryForIdByString(id)
+    };
+  };
 };
 
 module TezosLanguageUtil = {

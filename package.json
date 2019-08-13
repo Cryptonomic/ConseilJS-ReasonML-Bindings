@@ -20,12 +20,12 @@
     "prepublish": "npm run clean && npm run build"
   },
   "peerDependencies": {
-    "conseiljs": "^0.2.7"
+    "conseiljs": "^0.2.9"
   },
   "devDependencies": {
     "@glennsl/bs-jest": "^0.4.8",
     "bs-platform": "5.0.6",
     "jest": "^24.8.0",
-    "conseiljs": "^0.2.7"
+    "conseiljs": "^0.2.9"
   }
 }

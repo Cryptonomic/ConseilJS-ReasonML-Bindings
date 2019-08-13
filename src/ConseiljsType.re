@@ -175,6 +175,11 @@ type tezosBlockHead = Js.t({
   timestamp: int
 });
 
+type entityQuery = Js.t({
+  . entity: string,
+  query: conseilQuery
+});
+
 type tezosConseilClient = {
   . [@bs.meth] "getTezosEntityData": (conseilServerInfo, string, string, conseilQuery) => Js.Promise.t(array(string)),
   [@bs.meth] "getBlock": (conseilServerInfo, string, string) => Js.Promise.t(array(tezosBlock)),

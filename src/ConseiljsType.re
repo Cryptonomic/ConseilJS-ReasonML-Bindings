@@ -77,7 +77,8 @@ type conseilQueryBuilder = {
 
 type conseilServerInfo = Js.t({
   . url: string,
-  apiKey: string
+  apiKey: string,
+  network: string
 });
 
 type tezosBlock = Js.t({

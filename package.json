@@ -1,6 +1,6 @@
 {
   "name": "bs-conseiljs",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "BuckleScript bindings for ConseilJS",
   "main": "lib/js/src/ConseiljsRe.js",
   "repository": "https://github.com/Cryptonomic/ConseilJS-ReasonML-Bindings",
@@ -20,12 +20,16 @@
     "prepublish": "npm run clean && npm run build"
   },
   "peerDependencies": {
-    "conseiljs": "^0.2.9"
+    "conseiljs": "0.3.4-beta"
   },
   "devDependencies": {
-    "@glennsl/bs-jest": "^0.4.8",
-    "bs-platform": "5.0.6",
-    "jest": "^24.8.0",
-    "conseiljs": "^0.2.9"
+    "@glennsl/bs-jest": "0.4.9",
+    "bs-platform": "5.2.1",
+    "conseiljs": "0.3.4-beta",
+    "jest": "24.9.0"
+  },
+  "engines": {
+    "node": ">=10.17.x",
+    "npm": ">=6.11.x"
   }
 }

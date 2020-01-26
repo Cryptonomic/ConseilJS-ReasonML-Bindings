@@ -1,3 +1,28 @@
+type parameter = Js.t({
+  . _type: string,
+  name: string,
+  optional: bool,
+  constituent: string
+});
+
+type entryPoint = Js.t({
+  . name: string,
+  parameters: array(parameter),
+  structure: string
+});
+
+type conseilServerInfo = Js.t({
+  . url: string,
+  apiKey: string,
+  network: string
+});
+
+type tezosContractIntrospector = {
+  . [@bs.meth] "generateEntryPointsFromParams": string => array(entryPoint),
+  [@bs.meth] "generateEntryPointsFromCode": string => array(entryPoint),
+  [@bs.meth] "generateEntryPointsFromAddress": (conseilServerInfo, string, string) => Js.Promise.t(array(entryPoint))
+};
+
 type conseilOperator =  | BETWEEN  | EQ  | IN  | LIKE  | LT | BEFORE | GT  | AFTER  | STARTSWITH  | ENDSWITH | ISNULL;
 let operatorToString = conseilOperator : string =>
   switch (conseilOperator) {
@@ -74,12 +99,6 @@ type conseilQueryBuilder = {
   [@bs.meth] "setOutputType": (conseilQuery, string) => conseilQuery,
   [@bs.meth] "addAggregationFunction": (conseilQuery, string, string) => conseilQuery
 };
-
-type conseilServerInfo = Js.t({
-  . url: string,
-  apiKey: string,
-  network: string
-});
 
 type tezosBlock = Js.t({
   . active_proposal: string,
@@ -272,9 +291,11 @@ type tezosNodeReader = {
   [@bs.meth] "getBlockHead": (string) => Js.Promise.t(tezosBlock),
   [@bs.meth] "getAccountForBlock": (string, string, string) => Js.Promise.t(contract),
   [@bs.meth] "getCounterForAccount": (string, string) => Js.Promise.t(int),
+  [@bs.meth] "getSpendableBalanceForAccount": (string, string, string) => Js.Promise.t(int),
   [@bs.meth] "getAccountManagerForBlock": (string, string, string) => Js.Promise.t(managerKey),
   [@bs.meth] "isImplicitAndEmpty": (string, string) => Js.Promise.t(bool),
-  [@bs.meth] "isManagerKeyRevealedForAccount": (string, string) => Js.Promise.t(bool)
+  [@bs.meth] "isManagerKeyRevealedForAccount": (string, string) => Js.Promise.t(bool),
+  [@bs.meth] "getValueForBigMapKey": (string, int, string, string, string) => Js.Promise.t(bool)
 };
 
 type storeType = | Mnemonic | Fundraiser | Hardware;
@@ -309,25 +330,43 @@ type operation = Js.t({
   parameters: string
 });
 
+type testContractOperation = Js.t({
+  . gas: int,
+  storageCost: int  
+});
+
 type tezosNodeWriter = {
   . [@bs.meth] "signOperationGroup": (string, keyStore, string) => Js.Promise.t(signedOperationGroup),
   [@bs.meth] "forgeOperations": (string, array(operation)) => string,
   [@bs.meth] "forgeOperationsRemotely": (string, tezosBlock, array(operation)) => Js.Promise.t(string),
+  [@bs.meth] "preapplyOperation": (string, string, string, array(operation), signedOperationGroup, string) => Js.Promise.t(TezosType.alphaOperationsWithMetadata),
   [@bs.meth] "applyOperation": (string, string, string, array(operation), signedOperationGroup) => Js.Promise.t(TezosType.alphaOperationsWithMetadata),
   [@bs.meth] "injectOperation": (string, signedOperationGroup) => Js.Promise.t(string),
   [@bs.meth] "sendOperation": (string, array(operation), keyStore, string) => Js.Promise.t(TezosType.operationResult),
+  [@bs.meth] "getQueueStatus": (string, keyStore, string) => int,
   [@bs.meth] "appendRevealOperation": (string, keyStore, string, int, array(operation)) => Js.Promise.t(array(operation)),
   [@bs.meth] "sendTransactionOperation": (string, keyStore, string, int, int, string) => Js.Promise.t(TezosType.operationResult),
   [@bs.meth] "sendDelegationOperation": (string, keyStore, string, string, int, string) => Js.Promise.t(TezosType.operationResult),
   [@bs.meth] "sendUndelegationOperation": (string, keyStore, string, int, string) => Js.Promise.t(TezosType.operationResult),
-  [@bs.meth] "sendAccountOriginationOperation": (string, keyStore, int, string, bool, bool, int, string) => Js.Promise.t(TezosType.operationResult),
   [@bs.meth] "sendContractOriginationOperation": (string, keyStore, int, string, bool, bool, int, string, int, int, string, string, string) =>
     Js.Promise.t(TezosType.operationResult),
   [@bs.meth] "sendContractInvocationOperation": (string, keyStore, string, int, int, string, int, int, string, string) =>
     Js.Promise.t(TezosType.operationResult),
   [@bs.meth] "sendContractPing": (string, keyStore, string, int, string, int, int) => Js.Promise.t(TezosType.operationResult),
   [@bs.meth] "sendKeyRevealOperation": (string, keyStore, int, string) => Js.Promise.t(TezosType.operationResult),
-  [@bs.meth] "sendIdentityActivationOperation": (string, keyStore, string, string) => Js.Promise.t(TezosType.operationResult)
+  [@bs.meth] "sendIdentityActivationOperation": (string, keyStore, string, string) => Js.Promise.t(TezosType.operationResult),
+  [@bs.meth] "testContractInvocationOperation": (string, string, keyStore, string, int, int, string, int, int, string, string, string) =>
+    Js.Promise.t(testContractOperation),
+};
+
+type tezosProtocolHelper = {
+  . [@bs.meth] "verifyDestination": (string, string) => Js.Promise.t(bool),
+  [@bs.meth] "setDelegate": (string, keyStore, string, string, int, string) => Js.Promise.t(TezosType.operationResult),
+  [@bs.meth] "unSetDelegate": (string, keyStore, string, int, string) => Js.Promise.t(TezosType.operationResult),
+  [@bs.meth] "withdrawDelegatedFunds": (string, keyStore, string, int, int, string) => Js.Promise.t(TezosType.operationResult),
+  [@bs.meth] "sendDelegatedFunds": (string, keyStore, string, int, int, string, string) => Js.Promise.t(TezosType.operationResult),
+  [@bs.meth] "depositDelegatedFunds": (string, keyStore, string, int, int, string) => Js.Promise.t(TezosType.operationResult),
+  [@bs.meth] "deployManagerContract": (string, keyStore, string, int, int, string) => Js.Promise.t(TezosType.operationResult),
 };
 
 type tezosWalletUtil = {

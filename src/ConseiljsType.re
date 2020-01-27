@@ -202,11 +202,11 @@ type entityQuery = Js.t({
 
 type tezosConseilClient = {
   . [@bs.meth] "getTezosEntityData": (conseilServerInfo, string, string, conseilQuery) => Js.Promise.t(array(string)),
-  [@bs.meth] "getBlock": (conseilServerInfo, string, string) => Js.Promise.t(array(tezosBlock)),
+  [@bs.meth] "getBlock": (conseilServerInfo, string, string) => Js.Promise.t(tezosBlock),
   [@bs.meth] "getBlockHead": (conseilServerInfo, string) => Js.Promise.t(tezosBlockHead),
-  [@bs.meth] "getBlockByLevel": (conseilServerInfo, string, int) => Js.Promise.t(array(tezosBlock)),
-  [@bs.meth] "getAccount": (conseilServerInfo, string, string) => Js.Promise.t(array(tezosAccount)),
-  [@bs.meth] "getOperationGroup": (conseilServerInfo, string, string) => Js.Promise.t(array(tezosOperationGroup)),
+  [@bs.meth] "getBlockByLevel": (conseilServerInfo, string, int) => Js.Promise.t(tezosBlock),
+  [@bs.meth] "getAccount": (conseilServerInfo, string, string) => Js.Promise.t(tezosAccount),
+  [@bs.meth] "getOperationGroup": (conseilServerInfo, string, string) => Js.Promise.t(tezosOperationGroup),
   [@bs.meth] "getBlocks": (conseilServerInfo, string, conseilQuery) => Js.Promise.t(array(tezosBlock)),
   [@bs.meth] "getAccounts": (conseilServerInfo, string, conseilQuery) => Js.Promise.t(array(tezosAccount)),
   [@bs.meth] "getOperationGroups": (conseilServerInfo, string, conseilQuery) => Js.Promise.t(array(tezosAccount)),

@@ -1,14 +1,24 @@
 open ConseiljsType;
+[@bs.module "conseiljs"] external tezosContractIntrospector: tezosContractIntrospector = "TezosContractIntrospector";
 [@bs.module "conseiljs"] external conseilQueryBuilder: conseilQueryBuilder = "ConseilQueryBuilder";
 [@bs.module "conseiljs"] external tezosConseilClient: tezosConseilClient = "TezosConseilClient";
 [@bs.module "conseiljs"] external tezosLanguageUtil: tezosLanguageUtil = "TezosLanguageUtil";
 [@bs.module "conseiljs"] external tezosMessageUtils: tezosMessageUtils = "TezosMessageUtils";
 [@bs.module "conseiljs"] external tezosNodeReader: tezosNodeReader = "TezosNodeReader";
 [@bs.module "conseiljs"] external tezosNodeWriter: tezosNodeWriter = "TezosNodeWriter";
+[@bs.module "conseiljs"] external tezosProtocolHelper: tezosProtocolHelper = "TezosProtocolHelper";
 [@bs.module "conseiljs"] external tezosWalletUtil: tezosWalletUtil = "TezosWalletUtil";
 [@bs.module "conseiljs"] external tezosFileWallet: tezosFileWallet = "TezosFileWallet";
 [@bs.module "conseiljs"] external conseilDataClient: conseilDataClient = "ConseilDataClient";
 [@bs.module "conseiljs"] external conseilMetadataClient: conseilMetadataClient = "ConseilMetadataClient";
+
+module TezosContractIntrospector = {
+  let generateEntryPointsFromParams = (params: string) => tezosContractIntrospector##generateEntryPointsFromParams(params);
+  let generateEntryPointsFromCode = (contractCode: string) => tezosContractIntrospector##generateEntryPointsFromCode(contractCode);
+  let generateEntryPointsFromAddress = (conseilServer: conseilServerInfo, network: string, contractAddress: string) => 
+    tezosContractIntrospector##generateEntryPointsFromAddress(conseilServer, network, contractAddress);
+};
+
 module ConseilQueryBuilder = {
   let blankQuery = () => conseilQueryBuilder##blankQuery();
   let addPredicate = (query: conseilQuery, field: string, operation: conseilOperator, values: array(string), invert: bool ) =>
@@ -115,11 +125,15 @@ module TezosNodeReader = {
   let getAccountForBlock = (server: string, blockHash: string, accountHash: string) =>
     tezosNodeReader##getAccountForBlock(server, blockHash, accountHash);
   let getCounterForAccount = (server: string, accountHash: string) => tezosNodeReader##getCounterForAccount(server, accountHash);
+  let getSpendableBalanceForAccount = (server: string, accountHash: string, chainid: string) =>
+    tezosNodeReader##getSpendableBalanceForAccount(server, accountHash, chainid);
   let getAccountManagerForBlock = (server: string, blockHash: string, accountHash: string) =>
     tezosNodeReader##getAccountManagerForBlock(server, blockHash, accountHash);
   let isImplicitAndEmpty = (server: string, accountHash: string) => tezosNodeReader##isImplicitAndEmpty(server, accountHash);
   let isManagerKeyRevealedForAccount = (server: string, accountHash: string) =>
     tezosNodeReader##isManagerKeyRevealedForAccount(server, accountHash);
+  let getValueForBigMapKey = (server: string, index: int, key: string, block: string, chainid: string) =>
+    tezosNodeReader##getValueForBigMapKey(server, index, key, block, chainid);
 };
 
 module TezosNodeWriter = {
@@ -128,9 +142,13 @@ module TezosNodeWriter = {
   let forgeOperations = (branch: string, operations: array(operation)) => tezosNodeWriter##forgeOperations(branch, operations);
   let forgeOperationsRemotely = (server: string, blockHead: tezosBlock, operations: array(operation)) =>
     tezosNodeWriter##forgeOperationsRemotely(server, blockHead, operations);
+  let preapplyOperation = (server: string, branch: string, protocol: string, operations: array(operation), signedOpGroup: signedOperationGroup, chainid: string) =>
+    tezosNodeWriter##preapplyOperation(server, branch, protocol, operations, signedOpGroup, chainid);
   let applyOperation = (server: string, branch: string, protocol: string, operations: array(operation), signedOpGroup: signedOperationGroup) =>
     tezosNodeWriter##applyOperation(server, branch, protocol, operations, signedOpGroup);
   let injectOperation = (server: string, signedOpGroup: signedOperationGroup) => tezosNodeWriter##injectOperation(server, signedOpGroup);
+  let getQueueStatus = (server: string, keyStore: keyStore, path: string) =>
+    tezosNodeWriter##getQueueStatus(server, keyStore, path);
   let sendOperation = (server: string, operations: array(operation), keyStore: keyStore, path: string) =>
     tezosNodeWriter##sendOperation(server, operations, keyStore, path);
   let appendRevealOperation = (server: string, keyStore: keyStore, accountHash: string, index: int, operations: array(operation)) =>
@@ -141,8 +159,6 @@ module TezosNodeWriter = {
     tezosNodeWriter##sendDelegationOperation(server, keyStore, delegator, delegate, fee, path);
   let sendUndelegationOperation = (server: string, keyStore: keyStore, delegator: string, fee: int, path: string) =>
     tezosNodeWriter##sendUndelegationOperation(server, keyStore, delegator, fee, path);
-  let sendAccountOriginationOperation = (server: string, keyStore: keyStore, amount: int, delegate: string, spendable: bool, delegatable: bool, fee: int, path: string) =>
-    tezosNodeWriter##sendAccountOriginationOperation(server, keyStore, amount, delegate, spendable, delegatable, fee, path);
   let sendContractOriginationOperation = (
       server: string, keyStore: keyStore, amount: int, delegate: string, spendable: bool, delegatable: bool,
       fee: int, path: string, storage_limit: int, gas_limit: int, code: string, storage: string, codeFormat: TezosType.tezosParameterFormat
@@ -161,7 +177,30 @@ module TezosNodeWriter = {
     tezosNodeWriter##sendKeyRevealOperation(server, keyStore, fee, path);
   let sendIdentityActivationOperation = (server: string, keyStore: keyStore, code: string, path: string) =>
     tezosNodeWriter##sendIdentityActivationOperation(server, keyStore, code, path);
+  let testContractInvocationOperation = (
+    server: string, chainid: string, keyStore: keyStore, _to: string, amount: int, fee: int, path: string,
+    storageLimit: int, gasLimit: int, entryPoint: string, parameters: string, parameterFormat: string
+  ) =>
+    tezosNodeWriter##testContractInvocationOperation(
+      server, chainid, keyStore, _to, amount, fee, path, storageLimit, gasLimit, entryPoint, parameters, parameterFormat
+    );
 };
+
+module TezosProtocolHelper = {
+  let verifyDestination = (server: string, address: string) => tezosProtocolHelper##verifyDestination(server, address);
+  let setDelegate = (server: string, keyStore: keyStore, contract: string, delegate: string, fee: int, path: string) => 
+    tezosProtocolHelper##setDelegate(server, keyStore, contract, delegate, fee, path);
+  let unSetDelegate = (server: string, keyStore: keyStore, contract: string, fee: int, path: string) => 
+    tezosProtocolHelper##unSetDelegate(server, keyStore, contract, fee, path);
+  let withdrawDelegatedFunds = (server: string, keyStore: keyStore, contract: string, fee: int, amount: int, path: string) => 
+    tezosProtocolHelper##withdrawDelegatedFunds(server, keyStore, contract, fee, amount, path);
+  let sendDelegatedFunds = (server: string, keyStore: keyStore, contract: string, fee: int, amount: int, path: string, destination: string) => 
+    tezosProtocolHelper##sendDelegatedFunds(server, keyStore, contract, fee, amount, path, destination);
+  let depositDelegatedFunds = (server: string, keyStore: keyStore, contract: string, fee: int, amount: int, path: string) => 
+    tezosProtocolHelper##depositDelegatedFunds(server, keyStore, contract, fee, amount, path);
+  let deployManagerContract = (server: string, keyStore: keyStore, contract: string, fee: int, amount: int, path: string) => 
+    tezosProtocolHelper##deployManagerContract(server, keyStore, contract, fee, amount, path);
+}
 
 module TezosWalletUtil = {
   let unlockFundraiserIdentity = (mnemonic: string, email: string, password: string, pkh: string) =>

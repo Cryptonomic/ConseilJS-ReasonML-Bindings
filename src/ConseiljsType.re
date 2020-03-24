@@ -1,3 +1,5 @@
+type numStr = [`Int(int) | `Str(string)];
+
 type parameter = Js.t({
   . _type: string,
   name: string,
@@ -72,7 +74,7 @@ type conseilOrdering = Js.t({
 type conseilPredicate = Js.t({
   . field: string,
   operation: conseilOperator,
-  set: array(string),
+  set: array(numStr),
   inverse: bool
 });
 
@@ -92,7 +94,7 @@ type conseilQuery = Js.t({
 
 type conseilQueryBuilder = {
   . [@bs.meth] "blankQuery": unit => conseilQuery,
-  [@bs.meth] "addPredicate": (conseilQuery, string, string, array(string), bool) => conseilQuery,
+  [@bs.meth] "addPredicate": (conseilQuery, string, string, array(numStr), bool) => conseilQuery,
   [@bs.meth] "addFields": (conseilQuery, string) => conseilQuery,
   [@bs.meth] "addOrdering": (conseilQuery, string, string) => conseilQuery,
   [@bs.meth] "setLimit": (conseilQuery, int) => conseilQuery,

@@ -1,5 +1,6 @@
-type numStr = Int(int) | Str(string);
-
+type numStr = 
+  | Int(int)
+  | Str(string);
 type parameter = Js.t({
   . _type: string,
   name: string,

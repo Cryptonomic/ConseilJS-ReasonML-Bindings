@@ -21,7 +21,7 @@ open ConseiljsType;
          });
          test("#addPredicate", () => {
            let query = ConseilQueryBuilder.blankQuery();
-           let query = ConseilQueryBuilder.addPredicate(query, "block_hash", ConseiljsType.EQ, [|Str("test")|], false);
+           let query = ConseilQueryBuilder.addPredicate(query, "block_hash", ConseiljsType.EQ, `Str([|"test"|]), false);
            expect(query##limit) |> toBe(100);
          });
          test("#addOrdering", () => {

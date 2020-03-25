@@ -21,8 +21,20 @@ module TezosContractIntrospector = {
 
 module ConseilQueryBuilder = {
   let blankQuery = () => conseilQueryBuilder##blankQuery();
-  let addPredicate = (query: conseilQuery, field: string, operation: conseilOperator, values: array(numStr), invert: bool ) =>
-    conseilQueryBuilder##addPredicate(query, field, operation |> operatorToString, values, invert);
+  let numAddPredicate: (conseilQuery, string, string, array(int), bool) => conseilQuery = [%bs.raw {|
+    function (query, field, operation, values, invert) {
+      return Conseiljs.ConseilQueryBuilder.addPredicate(query, field, ConseiljsType.operatorToString(operation), values, invert);
+    }
+  |}];
+
+  let strAddPredicate = (query: conseilQuery, field: string, operation: conseilOperator, values: array(string), invert: bool ) =>
+  conseilQueryBuilder##addPredicate(query, field, operation |> operatorToString, values, invert);
+
+  let addPredicate = (query: conseilQuery, field: string, operation: conseilOperator, values: aggrSetType, invert: bool ) =>
+    switch values {
+    | `Str(strs) => strAddPredicate(query, field, operation, strs, invert);
+    | `Int(ints) =>  numAddPredicate(query, field, operation |> operatorToString, ints, invert);
+    };
   let addField = (query: conseilQuery, field: string) => conseilQueryBuilder##addFields(query, field);
   let rec addFields = (query: conseilQuery, fields: list(string)) => 
     switch fields {

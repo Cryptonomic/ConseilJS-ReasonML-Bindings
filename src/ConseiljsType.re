@@ -109,7 +109,7 @@ type tezosBlock = Js.t({
   level: int,
   proto: int,
   predecessor: string,
-  timestamp: int,
+  timestamp: float,
   validationPass: int,
   fitness: string,
   context: string,

@@ -23,7 +23,7 @@ module ConseilQueryBuilder = {
   let blankQuery = () => conseilQueryBuilder##blankQuery();
   let numAddPredicate: (conseilQuery, string, string, array(int), bool) => conseilQuery = [%bs.raw {|
     function (query, field, operation, values, invert) {
-      return Conseiljs.ConseilQueryBuilder.addPredicate(query, field, ConseiljsType.operatorToString(operation), values, invert);
+      return Conseiljs.ConseilQueryBuilder.addPredicate(query, field, operation, values, invert);
     }
   |}];
 

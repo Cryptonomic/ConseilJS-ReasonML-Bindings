@@ -1,4 +1,4 @@
-type aggrSetType = [ `Str(array(string)) | `Int(array(int)) ];
+type aggrSetType = [ `Str(array(string)) | `Int(array(int)) | `Float(array(float)) ];
 
 type parameter = Js.t({
   . _type: string,

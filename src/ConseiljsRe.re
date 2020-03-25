@@ -21,7 +21,13 @@ module TezosContractIntrospector = {
 
 module ConseilQueryBuilder = {
   let blankQuery = () => conseilQueryBuilder##blankQuery();
-  let numAddPredicate: (conseilQuery, string, string, array(int), bool) => conseilQuery = [%bs.raw {|
+  let intAddPredicate: (conseilQuery, string, string, array(int), bool) => conseilQuery = [%bs.raw {|
+    function (query, field, operation, values, invert) {
+      return Conseiljs.ConseilQueryBuilder.addPredicate(query, field, operation, values, invert);
+    }
+  |}];
+
+  let floatAddPredicate: (conseilQuery, string, string, array(float), bool) => conseilQuery = [%bs.raw {|
     function (query, field, operation, values, invert) {
       return Conseiljs.ConseilQueryBuilder.addPredicate(query, field, operation, values, invert);
     }
@@ -33,7 +39,8 @@ module ConseilQueryBuilder = {
   let addPredicate = (query: conseilQuery, field: string, operation: conseilOperator, values: aggrSetType, invert: bool ) =>
     switch values {
     | `Str(strs) => strAddPredicate(query, field, operation, strs, invert);
-    | `Int(ints) =>  numAddPredicate(query, field, operation |> operatorToString, ints, invert);
+    | `Int(ints) =>  intAddPredicate(query, field, operation |> operatorToString, ints, invert);
+    | `Float(flts) =>  floatAddPredicate(query, field, operation |> operatorToString, flts, invert);
     };
   let addField = (query: conseilQuery, field: string) => conseilQueryBuilder##addFields(query, field);
   let rec addFields = (query: conseilQuery, fields: list(string)) => 

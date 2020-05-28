@@ -117,7 +117,7 @@ type tezosBlock = Js.t({
   operations_hash: string,
   meta_cycle: int,
   meta_cycle_position: int,
-  meta_period_index: int,
+  meta_voting_period: int,
   period_kind: string
 });
 
